@@ -1,0 +1,249 @@
+.events-grid {
+  position: relative;
+  padding: 130px 0 120px;
+  min-height: clamp(850px, 92vh, 1150px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg, #0f0b1a);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+/* Darken the photo so cards + labels stay readable, same mood as the ref */
+.events-grid__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 11, 26, 0.92) 0%,
+    rgba(15, 11, 26, 0.75) 30%,
+    rgba(15, 11, 26, 0.85) 100%
+  );
+  pointer-events: none;
+}
+
+.events-grid__wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.events-grid__list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  row-gap: 84px;
+  column-gap: 48px;
+}
+
+/* --- Card --- */
+.event-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.event-card__circle-wrap {
+  position: relative;
+  width: clamp(210px, 17vw, 240px);
+  height: clamp(210px, 17vw, 240px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Two organic "blob" containers peeking out from behind the circle.
+   Resting state: soft asymmetric squircle. On hover: continuously
+   morphs its border-radius corners to create a wobbling blob effect,
+   like the reference video. */
+.event-card__backdrop {
+  position: absolute;
+  z-index: 1;
+  inset: -3.5%;
+  border-radius: 42% 58% 65% 35% / 45% 45% 55% 55%;
+}
+
+.event-card__backdrop--one {
+  background: linear-gradient(
+    135deg,
+    var(--pink, #e0249e) 0%,
+    var(--indigo, #5b2a86) 100%
+  );
+  transform: rotate(20deg);
+  opacity: 0.5;
+}
+
+.event-card__backdrop--two {
+  background: linear-gradient(
+    135deg,
+    var(--indigo, #5b2a86) 0%,
+    var(--pink, #e0249e) 100%
+  );
+  transform: rotate(-20deg);
+  opacity: 0.5;
+}
+
+/* Continuous organic morph while hovered */
+.event-card:hover .event-card__backdrop--one {
+  animation: blob-morph-one 2.5s ease-in-out infinite;
+}
+
+.event-card:hover .event-card__backdrop--two {
+  animation: blob-morph-two 2.8s ease-in-out infinite;
+}
+
+@keyframes blob-morph-one {
+  0%,
+  100% {
+    border-radius: 42% 58% 65% 35% / 45% 45% 55% 55%;
+    transform: rotate(20deg);
+  }
+  25% {
+    border-radius: 58% 42% 35% 65% / 55% 60% 40% 45%;
+    transform: rotate(28deg);
+  }
+  50% {
+    border-radius: 50% 50% 38% 62% / 62% 42% 58% 38%;
+    transform: rotate(16deg);
+  }
+  75% {
+    border-radius: 35% 65% 58% 42% / 45% 55% 45% 55%;
+    transform: rotate(24deg);
+  }
+}
+
+@keyframes blob-morph-two {
+  0%,
+  100% {
+    border-radius: 58% 42% 35% 65% / 55% 40% 60% 45%;
+    transform: rotate(-20deg);
+  }
+  25% {
+    border-radius: 42% 58% 62% 38% / 42% 58% 42% 58%;
+    transform: rotate(-12deg);
+  }
+  50% {
+    border-radius: 65% 35% 45% 55% / 58% 45% 55% 42%;
+    transform: rotate(-26deg);
+  }
+  75% {
+    border-radius: 38% 62% 55% 45% / 48% 52% 48% 52%;
+    transform: rotate(-18deg);
+  }
+}
+
+/* Two-tone gradient ring — matches the magenta-to-purple border in the video */
+.event-card__circle {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid transparent;
+}
+
+.event-card__circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.event-card__label {
+  font-family: var(--font-display, inherit);
+  font-size: 17.5px;
+  font-weight: 700;
+  color: var(--text-primary, #ffffff);
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .event-card:hover .event-card__backdrop--one,
+  .event-card:hover .event-card__backdrop--two {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+  .events-grid {
+    padding: 110px 0 100px;
+    min-height: auto;
+  }
+
+  .events-grid__list {
+    column-gap: 32px;
+    row-gap: 68px;
+  }
+
+  .event-card__circle-wrap {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+@media (max-width: 960px) {
+  .events-grid {
+    padding: 100px 0 90px;
+  }
+
+  .events-grid__list {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 68px;
+    column-gap: 36px;
+  }
+
+  .event-card__circle-wrap {
+    width: 210px;
+    height: 210px;
+  }
+
+  .event-card {
+    gap: 28px;
+  }
+}
+
+@media (max-width: 560px) {
+  .events-grid {
+    padding: 80px 0 70px;
+  }
+
+  .events-grid__list {
+    row-gap: 52px;
+    column-gap: 20px;
+  }
+
+  .event-card__circle-wrap {
+    width: 165px;
+    height: 165px;
+  }
+
+  .event-card__label {
+    font-size: 15px;
+  }
+
+  .event-card {
+    gap: 22px;
+  }
+}
+
+@media (max-width: 380px) {
+  .events-grid__list {
+    row-gap: 44px;
+    column-gap: 14px;
+  }
+
+  .event-card__circle-wrap {
+    width: 145px;
+    height: 145px;
+  }
+
+  .event-card__label {
+    font-size: 13.5px;
+  }
+}

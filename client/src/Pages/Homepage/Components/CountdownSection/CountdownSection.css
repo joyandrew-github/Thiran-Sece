@@ -1,0 +1,368 @@
+/* ==========================================================================
+   Countdown Section — "Ignition Sequence"
+   Signature element: split-flap style time tiles that flip like an
+   airport departure board, wired to the gradient/glow language of the
+   rest of the site.
+   ========================================================================== */
+
+.countdown {
+  position: relative;
+  padding: 100px 0 80px;
+  background:
+    var(--gradient-glow),
+    var(--bg);
+  overflow: hidden;
+}
+
+/* Decorative light flare — same signature as About */
+.countdown__flare {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: -60px;
+  margin-bottom: 8px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.countdown__flare img {
+  width: auto;
+  height: auto;
+  opacity: 0.85;
+  mix-blend-mode: screen;
+}
+
+.countdown__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.countdown__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pink-hover);
+  margin-bottom: 18px;
+}
+
+.countdown__eyebrow::before,
+.countdown__eyebrow::after {
+  content: "";
+  width: 20px;
+  height: 2px;
+  background: var(--gradient-flame);
+}
+
+.countdown__heading {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(30px, 4.2vw, 48px);
+  line-height: 1.1;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.countdown__heading-accent {
+  background: var(--gradient-flame);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.countdown__date {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 56px;
+}
+
+.countdown__date-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pink);
+  box-shadow: 0 0 10px var(--pink);
+}
+
+.countdown__live {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 2.4vw, 24px);
+  font-weight: 700;
+  color: var(--text-primary);
+  padding: 20px 32px;
+  border-radius: var(--radius-lg);
+  background: var(--gradient-flame);
+  box-shadow: var(--shadow-glow-pink);
+  margin-bottom: 56px;
+}
+
+/* --- Timer --- */
+.countdown__timer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(6px, 1.4vw, 20px);
+  margin-bottom: 0;
+  perspective: 1400px;
+}
+
+.countdown__unit-wrap {
+  display: flex;
+  align-items: center;
+  gap: clamp(6px, 1.4vw, 20px);
+}
+
+.countdown__colon {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 800;
+  color: var(--text-secondary);
+  opacity: 0.6;
+  transform: translateY(-20px);
+  padding: 0 2px;
+}
+
+.flap-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.flap-unit__face {
+  position: relative;
+  width: clamp(96px, 12.5vw, 168px);
+  height: clamp(112px, 14vw, 188px);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, var(--surface-raised) 0%, var(--surface) 100%);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transform-style: preserve-3d;
+}
+
+/* Center split-flap seam */
+.flap-unit__face::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+/* Subtle top sheen so it reads as a physical flap, not a flat chip */
+.flap-unit__face::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 45%);
+  pointer-events: none;
+}
+
+.flap-unit__value {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(42px, 6.4vw, 76px);
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  color: var(--text-primary);
+}
+
+/* Flip: a quick rotation + glow flash each time the digit changes */
+.flap-unit__face--flip {
+  animation: flap-flip 460ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes flap-flip {
+  0% {
+    transform: rotateX(0deg);
+    box-shadow: var(--shadow-card);
+  }
+  45% {
+    transform: rotateX(-90deg);
+    box-shadow: var(--shadow-glow-pink);
+  }
+  55% {
+    transform: rotateX(-90deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+    box-shadow: var(--shadow-card);
+  }
+}
+
+.flap-unit__label {
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* Stagger the ambient glow pulse per tile so the row breathes, not blinks */
+.flap-unit {
+  animation: flap-ambient 5200ms ease-in-out infinite;
+  animation-delay: calc(var(--i) * 260ms);
+}
+
+@keyframes flap-ambient {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.05);
+  }
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .countdown {
+    padding: 72px 0 60px;
+  }
+
+  .countdown__flare {
+    margin-top: -36px;
+    margin-bottom: 4px;
+  }
+
+  .countdown__date {
+    margin-bottom: 40px;
+    font-size: 13px;
+    justify-content: center;
+    text-align: center;
+    flex-wrap: wrap;
+    padding: 0 12px;
+  }
+
+  .flap-unit__face {
+    width: clamp(70px, 17vw, 110px);
+    height: clamp(82px, 20vw, 126px);
+    border-radius: var(--radius-md);
+  }
+
+  .flap-unit__value {
+    font-size: clamp(32px, 7.5vw, 50px);
+  }
+
+  .flap-unit__label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+  }
+
+  .flap-unit {
+    gap: 12px;
+  }
+
+  .countdown__colon {
+    font-size: clamp(22px, 5.5vw, 38px);
+    transform: translateY(-14px);
+  }
+}
+
+@media (max-width: 480px) {
+  .countdown {
+    padding: 56px 0 48px;
+  }
+
+  .countdown__eyebrow {
+    font-size: 11px;
+    margin-bottom: 12px;
+    gap: 8px;
+  }
+
+  .countdown__eyebrow::before,
+  .countdown__eyebrow::after {
+    width: 14px;
+  }
+
+  .countdown__heading {
+    font-size: clamp(24px, 7vw, 32px);
+    margin-bottom: 10px;
+  }
+
+  .countdown__date {
+    font-size: 12px;
+    line-height: 1.5;
+    margin-bottom: 32px;
+    gap: 4px 8px;
+  }
+
+  .countdown__timer {
+    gap: 4px;
+  }
+
+  .countdown__unit-wrap {
+    gap: 4px;
+  }
+
+  .flap-unit {
+    gap: 8px;
+  }
+
+  .flap-unit__face {
+    width: clamp(62px, 20vw, 76px);
+    height: clamp(72px, 23vw, 88px);
+    border-radius: var(--radius-sm);
+  }
+
+  .flap-unit__value {
+    font-size: clamp(26px, 8vw, 36px);
+  }
+
+  .flap-unit__label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+
+  .countdown__colon {
+    font-size: 20px;
+    transform: translateY(-12px);
+    padding: 0 1px;
+  }
+}
+
+@media (max-width: 360px) {
+  .flap-unit__face {
+    width: 58px;
+    height: 68px;
+  }
+
+  .flap-unit__value {
+    font-size: 24px;
+  }
+
+  .countdown__colon {
+    font-size: 16px;
+    transform: translateY(-10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flap-unit,
+  .flap-unit__face--flip {
+    animation: none !important;
+  }
+}

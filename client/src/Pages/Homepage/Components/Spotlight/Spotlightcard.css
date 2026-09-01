@@ -1,0 +1,167 @@
+/* ==========================================================================
+   THIRAN 2027 — Spotlight Card
+   A card that sits flat on --surface at rest. On hover/focus, a glow
+   follows the cursor and a pink → indigo gradient ring draws itself
+   around the border. No glow, no gradient, no motion at rest.
+   Depends on the global token sheet (colors, radii, shadows, transitions).
+   ========================================================================== */
+
+.spotlight-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+
+  transition: box-shadow var(--transition-base), border-color var(--transition-base);
+
+  /* cursor position, updated inline by JS; defaults keep it centered
+     before the first pointer move so nothing pops in off-screen */
+  --mx: 50%;
+  --my: 50%;
+}
+
+/* --------------------------------------------------------------------------
+   Layer order (all absolutely positioned, stacked via z-index):
+   0  glow      – radial gradient that tracks the cursor
+   0  pattern   – dot texture, revealed only inside the glow's radius
+   1  ::after   – gradient border ring
+   2  content   – the real card content
+   -------------------------------------------------------------------------- */
+
+.spotlight-card__glow,
+.spotlight-card__pattern {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 420ms ease;
+}
+
+.spotlight-card__glow {
+  background: radial-gradient(
+    480px circle at var(--mx) var(--my),
+    rgba(233, 26, 131, 0.24),
+    rgba(76, 36, 193, 0.12) 45%,
+    transparent 72%
+  );
+}
+
+.spotlight-card__pattern {
+  background-image: radial-gradient(rgba(245, 243, 250, 0.55) 1px, transparent 1px);
+  background-size: 16px 16px;
+  -webkit-mask-image: radial-gradient(420px circle at var(--mx) var(--my), #000 0%, transparent 72%);
+          mask-image: radial-gradient(420px circle at var(--mx) var(--my), #000 0%, transparent 72%);
+}
+
+.spotlight-card:hover .spotlight-card__glow,
+.spotlight-card:focus-within .spotlight-card__glow,
+.spotlight-card.is-active .spotlight-card__glow {
+  opacity: 1;
+}
+
+.spotlight-card:hover .spotlight-card__pattern,
+.spotlight-card:focus-within .spotlight-card__pattern,
+.spotlight-card.is-active .spotlight-card__pattern {
+  opacity: 0.5;
+}
+
+/* Gradient ring — a 1px border drawn with a masked gradient so it can fade
+   in over the resting var(--border) hairline without a layout shift */
+.spotlight-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--gradient-flame);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-base);
+}
+
+.spotlight-card:hover::after,
+.spotlight-card:focus-within::after,
+.spotlight-card.is-active::after {
+  opacity: 1;
+}
+
+.spotlight-card:hover,
+.spotlight-card:focus-within,
+.spotlight-card.is-active {
+  box-shadow: var(--shadow-card);
+}
+
+.spotlight-card__content {
+  position: relative;
+  z-index: 2;
+}
+
+/* Optional: gradient-ring pill button to match the card's hover accent
+   (e.g. a "Register Now" CTA inside a spotlight card) */
+.spotlight-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 28px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text-primary);
+  background: var(--surface);
+  transition: color var(--transition-base);
+}
+
+.spotlight-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: var(--gradient-flame);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}
+
+.spotlight-btn:hover {
+  color: #fff;
+}
+
+.spotlight-btn:hover::before {
+  background: var(--gradient-flame-hover);
+}
+
+/* Respect reduced motion: keep the effect, drop the transition */
+@media (prefers-reduced-motion: reduce) {
+  .spotlight-card,
+  .spotlight-card__glow,
+  .spotlight-card__pattern,
+  .spotlight-card::after,
+  .spotlight-btn,
+  .spotlight-btn::before {
+    transition: none !important;
+  }
+}
+
+/* Touch devices have no hover/cursor to spotlight — keep the card flat */
+@media (hover: none) {
+  .spotlight-card__glow,
+  .spotlight-card__pattern {
+    display: none;
+  }
+
+  .spotlight-card::after {
+    opacity: 0 !important;
+  }
+}

@@ -1,0 +1,149 @@
+/* ==========================================================================
+   MarqueeSection — infinite scrolling neon outline headline strip
+   Transparent background, seamless flush layout, crisp hollow outline typography
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Tourney:ital,wght@0,100..900;1,100..900&display=swap');
+
+.marquee-section {
+  position: relative;
+  overflow: hidden;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 48px 0;
+}
+
+.marquee-section__viewport {
+  overflow: hidden;
+  width: 100%;
+}
+
+.marquee-section__track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll var(--marquee-duration, 55s) linear infinite;
+  will-change: transform;
+}
+
+.marquee-section--pause-on-hover .marquee-section__track:hover {
+  animation-play-state: paused;
+}
+
+.marquee-section__group {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.marquee-section__item {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: clamp(28px, 4vw, 56px);
+  padding: 0 clamp(18px, 2.5vw, 42px);
+}
+
+/* 
+ * 140px Italic Tourney headline typography with true gradient stroke
+ */
+.marquee-section__text {
+  font-family: 'Tourney', sans-serif !important;
+  font-style: italic;
+  font-weight: 200;
+  font-size: clamp(64px, 9.5vw, 140px);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  -webkit-text-stroke-width: 1.2px;
+  paint-order: stroke fill;
+  transition: filter var(--transition-base, 0.3s ease);
+}
+
+.marquee-section__text--flame-1 {
+  background: linear-gradient(90deg, var(--pink, #E91A83) 0%, #D946EF 50%, #8B5CF6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-stroke-color: transparent;
+}
+
+.marquee-section__text--flame-2 {
+  background: linear-gradient(90deg, #8B5CF6 0%, #EC4899 50%, var(--pink, #E91A83) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-stroke-color: transparent;
+}
+
+.marquee-section__item:hover .marquee-section__text {
+  filter: drop-shadow(0 0 16px rgba(233, 26, 131, 0.75));
+}
+
+/* 
+ * 8-pointed star divider — matching the text height
+ */
+.marquee-section__divider {
+  flex-shrink: 0;
+  width: clamp(64px, 9.5vw, 140px) !important;
+  height: clamp(64px, 9.5vw, 140px) !important;
+  min-width: clamp(64px, 9.5vw, 140px) !important;
+  min-height: clamp(64px, 9.5vw, 140px) !important;
+  display: block;
+  animation: marquee-spin 22s linear infinite;
+  will-change: transform;
+}
+
+.marquee-section__item:hover .marquee-section__divider {
+  animation-duration: 6s;
+  filter: drop-shadow(0 0 16px rgba(233, 26, 131, 0.85));
+}
+
+@keyframes marquee-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-section__track,
+  .marquee-section__divider {
+    animation: none;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .marquee-section {
+    padding: 30px 0;
+  }
+
+  .marquee-section__item {
+    gap: 20px;
+    padding: 0 16px;
+  }
+
+  .marquee-section__text {
+    font-size: clamp(48px, 12vw, 76px);
+    -webkit-text-stroke-width: 1px;
+  }
+
+  .marquee-section__divider {
+    width: clamp(48px, 12vw, 76px) !important;
+    height: clamp(48px, 12vw, 76px) !important;
+    min-width: clamp(48px, 12vw, 76px) !important;
+    min-height: clamp(48px, 12vw, 76px) !important;
+  }
+}

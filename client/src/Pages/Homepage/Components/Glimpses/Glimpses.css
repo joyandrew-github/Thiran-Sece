@@ -1,0 +1,344 @@
+/* ==========================================================================
+   Glimpses — 10-item Bento Gallery with GSAP ScrollTrigger
+   ========================================================================== */
+
+.glimpses-section {
+  position: relative;
+  padding: 90px 0 130px;
+  overflow: hidden;
+}
+
+.glimpses-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.glimpses-header {
+  max-width: 720px;
+  margin: 0 auto 60px;
+  text-align: center;
+}
+
+.glimpses-header .eyebrow {
+  display: inline-block;
+  padding: 6px 18px;
+  border-radius: var(--radius-pill, 9999px);
+  border: 1px solid var(--border, #2E2545);
+  background: var(--surface-raised, #221B34);
+  color: var(--text-secondary, #A99FC2);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.glimpses-header h2 {
+  font-family: var(--font-display, inherit);
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  color: var(--text-primary, #F5F3FA);
+}
+
+.glimpses-header h2 span {
+  background: var(--gradient-flame, linear-gradient(135deg, #E91A83 0%, #4C24C1 100%));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.glimpses-header p {
+  color: var(--text-secondary, #A99FC2);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+/* 4-column balanced 16-cell bento grid */
+.glimpses {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: clamp(160px, 18vw, 240px);
+  grid-auto-flow: dense;
+  gap: 20px;
+}
+
+.glimpse-tile {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  padding: 0;
+  background: var(--surface, #1A1428);
+  border: 1px solid var(--border, #2E2545);
+  border-radius: var(--radius-lg, 18px);
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  transition: border-color var(--transition-base, 0.3s ease), box-shadow var(--transition-base, 0.3s ease);
+}
+
+.glimpse-tile--big {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.glimpse-tile--square {
+  grid-column: span 1;
+  grid-row: span 1;
+}
+
+.glimpse-tile__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+/* Soft flame-gradient glow overlay */
+.glimpse-tile__glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(233, 26, 131, 0.35), rgba(76, 36, 193, 0.35));
+  mix-blend-mode: overlay;
+}
+
+.glimpse-tile:hover {
+  border-color: rgba(233, 26, 131, 0.5);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(233, 26, 131, 0.2);
+}
+
+.glimpse-tile__caption {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2;
+  color: var(--text-primary, #F5F3FA);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 300ms ease, transform 300ms ease;
+  background: rgba(15, 11, 26, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 6px 12px;
+  border-radius: 8px;
+  width: fit-content;
+  max-width: calc(100% - 32px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glimpse-tile:hover .glimpse-tile__caption,
+.glimpse-tile:focus-visible .glimpse-tile__caption {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.glimpse-tile:focus-visible {
+  outline: 2px solid var(--pink-hover, #FF3D9E);
+  outline-offset: 3px;
+}
+
+/* --- Lightbox --- */
+.glimpse-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: rgba(15, 11, 26, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: glimpse-fade 200ms ease;
+}
+
+.glimpse-lightbox img {
+  max-width: min(1100px, 92vw);
+  max-height: 85vh;
+  border-radius: var(--radius-md, 14px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(233, 26, 131, 0.25);
+  border: 1px solid var(--border, #2E2545);
+}
+
+.glimpse-lightbox__close {
+  position: absolute;
+  top: 28px;
+  right: 32px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--surface-raised, #221B34);
+  color: var(--text-primary, #F5F3FA);
+  font-size: 24px;
+  line-height: 1;
+  border: 1px solid var(--border, #2E2545);
+  cursor: pointer;
+  transition: transform var(--transition-base, 0.2s ease), background var(--transition-base, 0.2s ease);
+}
+
+.glimpse-lightbox__close:hover {
+  transform: scale(1.1);
+  background: var(--pink, #E91A83);
+}
+
+@keyframes glimpse-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* --- CTA Button with Dynamic Shimmer & Gradient Hover --- */
+.glimpses-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 54px;
+}
+
+.glimpses-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 42px;
+  border-radius: var(--radius-pill, 9999px);
+  font-family: var(--font-body, inherit);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.03em;
+  color: var(--text-primary, #F5F3FA);
+  background: var(--surface, #1A1428);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  text-decoration: none;
+  cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+              box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+              color 0.3s ease;
+}
+
+/* Border ring */
+.glimpses-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.8px;
+  background: var(--gradient-flame, linear-gradient(135deg, #E91A83 0%, #4C24C1 100%));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  z-index: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* Shimmer ray wipe on hover */
+.glimpses-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 70%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 100%
+  );
+  transform: skewX(-25deg);
+  pointer-events: none;
+  z-index: 2;
+  transition: left 0.75s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.glimpses-btn:hover {
+  color: #ffffff;
+  background: linear-gradient(135deg, #E91A83 0%, #7928CA 60%, #4C24C1 100%);
+  transform: translateY(-4px) scale(1.04);
+  box-shadow: 0 16px 45px rgba(233, 26, 131, 0.55),
+              0 0 40px rgba(121, 40, 202, 0.45);
+}
+
+.glimpses-btn:hover::before {
+  opacity: 0;
+}
+
+.glimpses-btn:hover::after {
+  left: 160%;
+}
+
+.glimpses-btn:active {
+  transform: translateY(-1px) scale(0.99);
+  box-shadow: 0 8px 25px rgba(233, 26, 131, 0.4);
+}
+
+.glimpses-btn__arrow {
+  width: 19px;
+  height: 19px;
+  stroke-width: 2.4;
+  z-index: 3;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.glimpses-btn:hover .glimpses-btn__arrow {
+  transform: translateX(6px) scale(1.15);
+}
+
+/* --- Responsive --- */
+@media (max-width: 990px) {
+  .glimpses-section {
+    padding: 70px 0 100px;
+  }
+
+  .glimpses {
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: clamp(150px, 22vw, 200px);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .glimpses-section {
+    padding: 50px 0 80px;
+  }
+
+  .glimpses-container {
+    padding: 0 16px;
+  }
+
+  .glimpses-header {
+    margin-bottom: 36px;
+  }
+
+  .glimpses {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: clamp(140px, 38vw, 180px);
+    gap: 12px;
+  }
+
+  .glimpse-tile {
+    border-radius: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glimpse-tile__img,
+  .glimpse-tile__glow,
+  .glimpse-tile__caption,
+  .glimpse-lightbox {
+    transition: none !important;
+    animation: none !important;
+  }
+}

@@ -1,0 +1,296 @@
+/* ==========================================================================
+   Navbar — morphs from an edge-to-edge bar into a floating glass capsule
+   as the page scrolls, echoing the poster's flame/glow motif.
+   ========================================================================== */
+
+.nav-shell {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+
+.navbar {
+  /* Layout only — visual styles are animated by framer-motion inline */
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 4px;
+  min-height: var(--nav-height);
+  padding: 0 32px;
+  pointer-events: auto;
+  border-bottom: 1px solid rgba(46, 37, 69, 0.6);
+  /* No overflow:hidden — dropdown is position:absolute and must escape the bar */
+}
+
+/* .navbar--float is now handled by framer-motion animate prop */
+
+
+/* --- Logo --- */
+.navbar__logo {
+  display: flex;
+  align-items: center;
+  margin-right: 24px;
+  flex-shrink: 0;
+}
+
+/* --- Logo image --- */
+.navbar__logo-img {
+  width: auto;
+  height: 44px;          /* framer-motion animates this to 36px on scroll */
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(233, 26, 131, 0.25));
+  transition: filter var(--transition-base);
+}
+
+.navbar__logo:hover .navbar__logo-img {
+  filter: drop-shadow(0 0 14px rgba(233, 26, 131, 0.5));
+}
+
+
+/* --- Link list --- */
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;        /* allow this flex item to compress */
+  justify-content: center;
+  overflow: visible;   /* dropdown must escape — never clip here */
+}
+
+.navbar__item {
+  position: relative;
+}
+
+.navbar__link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  transition: color var(--transition-base), background var(--transition-base);
+}
+
+.navbar__link:hover,
+.navbar__link.is-open {
+  color: var(--text-primary);
+  background: rgba(233, 26, 131, 0.12);
+}
+
+.navbar__chevron {
+  transition: transform var(--transition-base);
+  color: var(--text-secondary);
+}
+
+.navbar__link.is-open .navbar__chevron {
+  transform: rotate(180deg);
+  color: var(--pink-hover);
+}
+
+/* --- Dropdown --- */
+.navbar__dropdown {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 50%;
+  /* transform is owned by framer-motion (x: "-50%") — do not set here */
+  min-width: 240px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 8px;
+  pointer-events: none;
+  z-index: 10;
+  /* framer-motion AnimatePresence handles opacity/scale/y */
+}
+
+.navbar__dropdown::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 12px;
+  height: 12px;
+  background: var(--surface-raised);
+  border-left: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+}
+
+.navbar__dropdown--visible {
+  pointer-events: auto;
+}
+
+
+.navbar__dropdown-link {
+  display: block;
+  padding: 10px 14px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-base), color var(--transition-base);
+}
+
+.navbar__dropdown-link:hover {
+  background: var(--gradient-flame);
+  color: var(--text-primary);
+}
+
+/* --- CTA --- */
+.navbar__cta {
+  flex-shrink: 0;      /* never let Register get squeezed away */
+  padding: 10px 22px;
+  margin-left: 16px;
+  font-size: 13.5px;
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  background: var(--gradient-flame);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-glow-pink);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background var(--transition-base);
+}
+
+.navbar__cta:hover {
+  background: var(--gradient-flame-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 0 40px rgba(233, 26, 131, 0.5);
+}
+
+/* --- Burger (mobile) --- */
+.navbar__burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 38px;
+  height: 38px;
+  margin-left: 6px;
+  flex-shrink: 0;
+}
+
+.navbar__burger span {
+  height: 2px;
+  width: 100%;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: transform var(--transition-base), opacity var(--transition-base);
+}
+
+.navbar__burger.is-active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.navbar__burger.is-active span:nth-child(2) {
+  opacity: 0;
+}
+.navbar__burger.is-active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* --- Mobile drawer: AnimatePresence drives height/opacity --- */
+.navbar__mobile {
+  width: calc(100% - 32px);
+  overflow: hidden;
+  background: var(--surface-glass);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin-top: 8px;
+  box-shadow: var(--shadow-card);
+  pointer-events: auto;
+}
+
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+/* --- Medium: squeeze link padding so items fit on small laptops --- */
+@media (max-width: 1440px) and (min-width: 1281px) {
+  .navbar__link {
+    padding: 8px 8px;
+    font-size: 12px;
+  }
+  .navbar {
+    gap: 2px;
+    padding: 0 20px;
+  }
+  .navbar__cta {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+}
+
+/* --- Mobile / small laptop: switch to hamburger --- */
+@media (max-width: 1280px) {
+  .navbar__links,
+  .navbar__cta {
+    display: none;
+  }
+
+  .navbar__burger {
+    display: flex;
+    margin-left: auto;
+  }
+
+  .navbar {
+    padding: 10px 20px;
+    overflow: visible;  /* let the drawer breathe */
+  }
+
+  /* AnimatePresence/framer-motion now controls the drawer show/hide */
+
+  .navbar__mobile ul {
+    padding: 10px;
+  }
+
+  .navbar__mobile-item summary {
+    list-style: none;
+    padding: 14px 12px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+  }
+
+  .navbar__mobile-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .navbar__mobile-sub {
+    padding: 6px 0 10px 14px;
+  }
+
+  .navbar__mobile-sub a {
+    display: block;
+    padding: 9px 10px;
+    font-size: 13.5px;
+    color: var(--text-secondary);
+  }
+
+  .navbar__mobile-sub a:hover {
+    color: var(--pink-hover);
+  }
+
+  .navbar__cta--mobile {
+    display: block;
+    text-align: center;
+    margin: 12px;
+  }
+}

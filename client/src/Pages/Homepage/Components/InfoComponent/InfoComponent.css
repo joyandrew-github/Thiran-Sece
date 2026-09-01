@@ -1,0 +1,278 @@
+/* ==========================================================================
+   InfoComponent — "Access Panel" registration-deadline strip
+   Relies on the global THIRAN 2027 tokens (:root) already loaded on the page.
+   ========================================================================== */
+
+.info-panel {
+  position: relative;
+  padding: 56px 32px;
+}
+
+/* Angular corner-notch border, filled with the flame gradient */
+.info-panel__border {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(233, 26, 131, 0.55), rgba(76, 36, 193, 0.55));
+  clip-path: polygon(0 0, calc(100% - 36px) 0, 100% 36px, 100% 100%, 0 100%);
+}
+
+.info-panel__body {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--gradient-glow), var(--surface);
+  clip-path: polygon(0 0, calc(100% - 35px) 0, 100% 35px, 100% 100%, 0 100%);
+  box-shadow: var(--shadow-card);
+  min-height: clamp(240px, 24vw, 300px);
+  padding: 28px clamp(24px, 4vw, 48px) 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Folded-corner accent filling the clipped notch */
+.info-panel__body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 36px 36px 0;
+  border-color: transparent var(--indigo) transparent transparent;
+  z-index: 0;
+}
+
+/* Slow traveling scan-line, standing in for a live "console" read */
+.info-panel__scanline {
+  position: absolute;
+  top: 0;
+  left: -140px;
+  width: 140px;
+  height: 2px;
+  background: var(--gradient-flame);
+  opacity: 0;
+  animation: info-scan 5.5s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes info-scan {
+  0%   { left: -140px; opacity: 0; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+/* --- Status row --- */
+.info-panel__status {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pink);
+  box-shadow: 0 0 0 0 rgba(233, 26, 131, 0.55);
+  animation: info-pulse 2.2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes info-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(233, 26, 131, 0.55); }
+  50%      { box-shadow: 0 0 0 6px rgba(233, 26, 131, 0); }
+}
+
+.status-text {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* --- Main grid --- */
+.info-panel__grid {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(200px, 1.1fr) minmax(210px, 1fr) minmax(200px, 1fr);
+  align-items: center;
+  gap: 28px;
+}
+
+.info-panel__eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.info-panel__date {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.date-num {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(56px, 6.5vw, 84px);
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+  background: var(--gradient-flame);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.date-meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(20px, 2.4vw, 30px);
+  line-height: 1.05;
+  letter-spacing: 0.04em;
+  background: var(--gradient-flame);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.info-panel__clearances {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-left: 1px solid var(--border);
+  padding-left: 24px;
+}
+
+.info-panel__clearances li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text-primary);
+}
+
+.tag-mark {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  transform: rotate(45deg);
+  background: var(--pink);
+}
+
+.info-panel__clearances li:nth-child(2) .tag-mark { background: var(--indigo-hover); }
+.info-panel__clearances li:nth-child(3) .tag-mark { background: var(--pink-hover); }
+
+.info-panel__action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 26px;
+  border-radius: var(--radius-pill);
+  background: var(--gradient-flame);
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  box-shadow: var(--shadow-glow-pink);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background var(--transition-base);
+}
+
+.cta-button:hover {
+  background: var(--gradient-flame-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow-pink), var(--shadow-glow-indigo);
+}
+
+.cta-button svg {
+  transition: transform var(--transition-base);
+}
+
+.cta-button:hover svg {
+  transform: translateX(3px);
+}
+
+.info-panel__note {
+  font-size: 12px;
+  line-height: 1.4;
+  max-width: 230px;
+  color: var(--text-secondary);
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  .info-panel__grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .info-panel__clearances {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+  }
+
+  .info-panel__action {
+    align-items: stretch;
+  }
+
+  .cta-button {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .info-panel {
+    padding: 40px 20px;
+  }
+
+  .info-panel__border {
+    clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
+  }
+
+  .info-panel__body {
+    min-height: auto;
+    padding: 24px 20px 28px;
+    clip-path: polygon(0 0, calc(100% - 23px) 0, 100% 23px, 100% 100%, 0 100%);
+  }
+
+  .info-panel__body::before {
+    border-width: 0 24px 24px 0;
+  }
+
+  .info-panel__scanline {
+    display: none;
+  }
+
+  .date-num {
+    font-size: 48px;
+  }
+
+  .date-meta {
+    font-size: 18px;
+  }
+}

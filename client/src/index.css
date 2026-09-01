@@ -1,0 +1,120 @@
+/* ==========================================================================
+   THIRAN 2027 — Global Design Tokens
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@500;600;700;800;900&display=swap');
+
+:root {
+  /* --- Base palette (provided) --- */
+  --bg: #0F0B1A;
+  --surface: #1A1428;
+  --pink: #E91A83;
+  --pink-hover: #FF3D9E;
+  --indigo: #4C24C1;
+  --indigo-hover: #6B3FE0;
+  --text-primary: #F5F3FA;
+  --text-secondary: #A99FC2;
+  --border: #2E2545;
+
+  /* --- Extended tokens (derived, for consistent usage) --- */
+  --surface-raised: #221B34;
+  --surface-glass: rgba(26, 20, 40, 0.72);
+  --gradient-flame: linear-gradient(135deg, var(--pink) 0%, var(--indigo) 100%);
+  --gradient-flame-hover: linear-gradient(135deg, var(--pink-hover) 0%, var(--indigo-hover) 100%);
+  --gradient-glow: radial-gradient(60% 60% at 50% 0%, rgba(233, 26, 131, 0.28) 0%, rgba(76, 36, 193, 0.10) 55%, rgba(76, 36, 193, 0) 100%);
+  --shadow-glow-pink: 0 0 32px rgba(233, 26, 131, 0.35);
+  --shadow-glow-indigo: 0 0 32px rgba(76, 36, 193, 0.35);
+  --shadow-card: 0 12px 32px rgba(0, 0, 0, 0.45);
+
+  /* --- Type scale --- */
+  --font-display: 'Inter', 'Segoe UI', sans-serif;
+  --font-body:    'Inter', 'Segoe UI', sans-serif;
+
+  /* --- Layout --- */
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 28px;
+  --radius-pill: 999px;
+  --nav-height: 88px;
+  --content-max: 1240px;
+
+  --transition-base: 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+/* Visible keyboard focus, respected sitewide */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--pink-hover);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+.container {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* --- App shell (Layout.jsx) --- */
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
+  padding-top: var(--nav-height);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 0 20px;
+  }
+}
