@@ -1,6 +1,7 @@
 {
     "name": "thiran-sece",
     "private": true,
+    "type": "module",
     "scripts": {
         "prepare": "husky",
         "ci": "npm ci --prefix client && npm ci --prefix server && npm ci --prefix admin",
