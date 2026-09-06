@@ -15,32 +15,32 @@ import './Spotlightcard.css';
  *     <a className="spotlight-btn" href="#">Register Now</a>
  *   </SpotlightCard>
  */
-export default function SpotlightCard({
-  as: Tag = 'div',
-  className = '',
-  children,
-  ...rest
-}) {
-  const cardRef = useRef(null);
+export default function SpotlightCard({ as: Tag = 'div', className = '', children, ...rest }) {
+    const cardRef = useRef(null);
 
-  const handlePointerMove = useCallback((event) => {
-    const card = cardRef.current;
-    if (!card) return;
-    const rect = card.getBoundingClientRect();
-    card.style.setProperty('--mx', `${event.clientX - rect.left}px`);
-    card.style.setProperty('--my', `${event.clientY - rect.top}px`);
-  }, []);
+    const handlePointerMove = useCallback((event) => {
+        const card = cardRef.current;
+        if (!card) return;
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty('--mx', `${event.clientX - rect.left}px`);
+        card.style.setProperty('--my', `${event.clientY - rect.top}px`);
+    }, []);
 
-  return (
-    <Tag
-      ref={cardRef}
-      className={`spotlight-card ${className}`.trim()}
-      onMouseMove={handlePointerMove}
-      {...rest}
-    >
-      <div className="spotlight-card__glow" aria-hidden="true" />
-      <div className="spotlight-card__pattern" aria-hidden="true" />
-      <div className="spotlight-card__content">{children}</div>
-    </Tag>
-  );
+    return (
+        <Tag
+            ref={cardRef}
+            className={`spotlight-card ${className}`.trim()}
+            onMouseMove={handlePointerMove}
+            {...rest}>
+            <div
+                className="spotlight-card__glow"
+                aria-hidden="true"
+            />
+            <div
+                className="spotlight-card__pattern"
+                aria-hidden="true"
+            />
+            <div className="spotlight-card__content">{children}</div>
+        </Tag>
+    );
 }
