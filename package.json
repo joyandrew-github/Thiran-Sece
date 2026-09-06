@@ -4,7 +4,7 @@
     "type": "module",
     "scripts": {
         "prepare": "husky",
-        "ci": "npm ci --prefix client && npm ci --prefix server && npm ci --prefix admin",
+        "ci": "npm ci && npm ci --prefix client && npm ci --prefix server && npm ci --prefix admin && npm run prepare",
         "client": "npm run dev --prefix client",
         "server": "npm run dev --prefix server",
         "admin": "npm run dev --prefix admin",
