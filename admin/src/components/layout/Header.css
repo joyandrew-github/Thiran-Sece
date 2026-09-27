@@ -1,0 +1,145 @@
+/* ==========================================================================
+   Admin Header Component Styles
+   ========================================================================== */
+
+.admin-header {
+    height: 80px;
+    padding: 0 36px;
+    background: rgba(26, 20, 40, 0.7);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 80;
+}
+
+.admin-header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.admin-mobile-toggle {
+    display: none;
+    color: var(--text-secondary);
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    background: rgba(245, 243, 250, 0.04);
+    border: 1px solid var(--border);
+    transition: all 0.2s ease;
+}
+
+.admin-mobile-toggle:hover {
+    color: var(--pink);
+    border-color: var(--pink);
+}
+
+.admin-header-title-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.admin-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.admin-breadcrumb-active {
+    color: var(--pink);
+    font-weight: 700;
+}
+
+.admin-header-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+}
+
+/* Right Header Controls */
+.admin-header-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.admin-header-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    border-radius: var(--radius-pill);
+    background: rgba(245, 243, 250, 0.04);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-size: 12.5px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.admin-header-link-btn:hover {
+    background: rgba(233, 26, 131, 0.12);
+    border-color: var(--pink);
+    color: #ffffff;
+    box-shadow: 0 0 16px rgba(233, 26, 131, 0.3);
+}
+
+.admin-header-user-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: var(--radius-pill);
+    background: rgba(76, 36, 193, 0.15);
+    border: 1px solid rgba(76, 36, 193, 0.35);
+    color: var(--text-primary);
+    font-size: 12.5px;
+    font-weight: 700;
+}
+
+.admin-header-logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 68, 68, 0.1);
+    border: 1px solid rgba(255, 68, 68, 0.25);
+    color: #ff6b6b;
+    transition: all 0.2s ease;
+}
+
+.admin-header-logout:hover {
+    background: rgba(255, 68, 68, 0.25);
+    color: #ffffff;
+}
+
+@media (max-width: 1024px) {
+    .admin-header {
+        padding: 0 20px;
+    }
+
+    .admin-mobile-toggle {
+        display: flex;
+    }
+}
+
+@media (max-width: 640px) {
+    .admin-header-link-btn span {
+        display: none;
+    }
+
+    .admin-header-user-badge span {
+        display: none;
+    }
+}

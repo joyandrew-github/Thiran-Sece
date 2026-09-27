@@ -1,0 +1,37 @@
+/* ==========================================================================
+   Admin Layout Shell Styles
+   ========================================================================== */
+
+.admin-layout-shell {
+    min-height: 100vh;
+    display: flex;
+    background-color: var(--bg);
+    color: var(--text-primary);
+}
+
+.admin-layout-main {
+    flex: 1;
+    margin-left: 260px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    transition: margin-left var(--transition-base);
+}
+
+.admin-layout-content {
+    flex: 1;
+    padding: 36px;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+    .admin-layout-main {
+        margin-left: 0;
+    }
+
+    .admin-layout-content {
+        padding: 24px 20px;
+    }
+}

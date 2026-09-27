@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import { io } from 'socket.io-client';
 import { navData } from './navdata';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import './Navbar.css';
@@ -12,7 +13,60 @@ export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [openIndex, setOpenIndex] = useState(null);
     const [mobileOpen, setMobileOpen] = useState(false);
-    const closeTimer = useRef(null);
+    const [navItems, setNavItems] = useState(navData);
+    const headerRef = useRef(null);
+
+    // Real-time synchronization via Socket.IO & PostgreSQL API
+    useEffect(() => {
+        let isMounted = true;
+
+        const loadNav = () => {
+            fetch('http://localhost:5000/api/navigation')
+                .then((res) => res.json())
+                .then((data) => {
+                    if (isMounted && data.success && Array.isArray(data.items) && data.items.length > 0) {
+                        const formatted = data.items.map((item) => ({
+                            label: item.label,
+                            path: item.slug,
+                            dropdown: item.children ? item.children.map((c) => ({ label: c.label, path: c.slug })) : []
+                        }));
+                        setNavItems(formatted);
+                    }
+                })
+                .catch((err) => {
+                    console.warn('Backend API connection pending, using fallback navigation:', err.message);
+                });
+        };
+
+        // Initial fetch on mount
+        loadNav();
+
+        // Connect Socket.IO client for real-time updates WITHOUT browser refresh
+        const socket = io('http://localhost:5000', {
+            transports: ['websocket', 'polling'],
+            reconnection: true
+        });
+
+        socket.on('connect', () => {
+            console.log('⚡ Client Socket connected for real-time navbar updates');
+            loadNav();
+        });
+
+        socket.on('navigation:changed', (payload) => {
+            console.log('📡 Real-time navigation update received on Client:', payload);
+            loadNav();
+        });
+
+        socket.on('reconnect', () => {
+            console.log('🔄 Socket reconnected. Synchronizing client state with PostgreSQL...');
+            loadNav();
+        });
+
+        return () => {
+            isMounted = false;
+            socket.disconnect();
+        };
+    }, []);
 
     // Framer-motion scroll tracker — same pattern as reference
     useMotionValueEvent(scrollY, 'change', (v) => setScrolled(v > 60));
@@ -29,19 +83,24 @@ export default function Navbar() {
         return () => window.removeEventListener('resize', handler);
     }, []);
 
+    // Close open dropdown when clicking outside the navbar
+    useEffect(() => {
+        if (openIndex === null) return;
+        const handleClickOutside = (event) => {
+            if (headerRef.current && !headerRef.current.contains(event.target)) {
+                setOpenIndex(null);
+            }
+        };
+        document.addEventListener('pointerdown', handleClickOutside);
+        return () => document.removeEventListener('pointerdown', handleClickOutside);
+    }, [openIndex]);
+
     // 8% of viewport per side, minimum 24px — grows naturally with screen width
     const sideInset = !isMobile && scrolled ? Math.max(24, vw * 0.08) : 0;
 
-    const handleEnter = (idx) => {
-        clearTimeout(closeTimer.current);
-        setOpenIndex(idx);
-    };
-    const handleLeave = () => {
-        closeTimer.current = setTimeout(() => setOpenIndex(null), 150);
-    };
-
     return (
         <motion.header
+            ref={headerRef}
             className="nav-shell"
             animate={{
                 paddingLeft: sideInset,
@@ -88,21 +147,19 @@ export default function Navbar() {
 
                 {/* Nav links */}
                 <ul className="navbar__links">
-                    {navData.map((item, idx) => (
+                    {navItems.map((item, idx) => (
                         <li
-                            key={item.label}
+                            key={item.label || idx}
                             className="navbar__item"
-                            style={{ zIndex: openIndex === idx ? 20 : 1 }}
-                            onMouseEnter={() => handleEnter(idx)}
-                            onMouseLeave={handleLeave}>
-                            <button
-                                type="button"
-                                className={`navbar__link ${openIndex === idx ? 'is-open' : ''}`}
-                                aria-haspopup="true"
-                                aria-expanded={openIndex === idx}
-                                onClick={() => setOpenIndex(openIndex === idx ? null : idx)}>
-                                {item.label}
-                                {item.dropdown?.length > 0 && (
+                            style={{ zIndex: openIndex === idx ? 20 : 1 }}>
+                            {item.dropdown?.length > 0 ? (
+                                <button
+                                    type="button"
+                                    className={`navbar__link ${openIndex === idx ? 'is-open' : ''}`}
+                                    aria-haspopup="true"
+                                    aria-expanded={openIndex === idx}
+                                    onClick={() => setOpenIndex(openIndex === idx ? null : idx)}>
+                                    {item.label}
                                     <motion.svg
                                         className="navbar__chevron"
                                         width="10"
@@ -119,8 +176,15 @@ export default function Navbar() {
                                             strokeLinejoin="round"
                                         />
                                     </motion.svg>
-                                )}
-                            </button>
+                                </button>
+                            ) : (
+                                <NavLink
+                                    to={item.path || '/'}
+                                    className="navbar__link"
+                                    onClick={() => setOpenIndex(null)}>
+                                    {item.label}
+                                </NavLink>
+                            )}
 
                             <AnimatePresence>
                                 {item.dropdown?.length > 0 && openIndex === idx && (
@@ -183,7 +247,7 @@ export default function Navbar() {
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.24, ease: 'easeInOut' }}>
                         <ul>
-                            {navData.map((item) => (
+                            {navItems.map((item) => (
                                 <li
                                     key={item.label}
                                     className="navbar__mobile-item">

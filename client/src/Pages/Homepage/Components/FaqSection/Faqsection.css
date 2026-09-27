@@ -323,7 +323,6 @@
     box-shadow: 0 0 14px rgba(233, 26, 131, 0.3);
 }
 
-.faq-item:hover .faq-item__icon svg,
 .faq-item.is-open .faq-item__icon svg {
     transform: rotate(180deg);
 }
@@ -337,7 +336,6 @@
     transition: grid-template-rows 340ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.faq-item:hover .faq-item__answer,
 .faq-item.is-open .faq-item__answer {
     grid-template-rows: 1fr;
 }

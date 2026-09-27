@@ -1,0 +1,182 @@
+/* ==========================================================================
+   THIRAN 2027 — Particular Sub-Event Detail Page (Exact Image 1 Design Match)
+   ========================================================================== */
+
+.dedp-wrapper {
+    min-height: 85vh;
+    padding: 40px 0 80px 0;
+}
+
+/* Category Top Bar */
+.dedp-category-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    background: rgba(26, 20, 40, 0.6);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 24px;
+    margin-bottom: 40px;
+    backdrop-filter: blur(12px);
+}
+
+.dedp-cat-item {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    transition: all 0.2s ease;
+}
+
+.dedp-cat-item:hover {
+    color: var(--text-primary);
+}
+
+.dedp-cat-item--active {
+    color: #ffffff;
+    background: rgba(245, 243, 250, 0.1);
+}
+
+/* 2 Column Main Detail Layout (Exact Image 1 Match) */
+.dedp-detail-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 40px;
+    align-items: start;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+    .dedp-detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Left: Poster Box */
+.dedp-poster-box {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(46, 37, 69, 0.8);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+    background: #140d24;
+}
+
+.dedp-poster-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Right: Schedule Card (Exact Image 1 Glassmorphism Design) */
+.dedp-schedule-card {
+    background: rgba(22, 16, 38, 0.95);
+    border: 1px solid rgba(76, 36, 193, 0.35);
+    border-radius: 20px;
+    padding: 36px 32px;
+    box-shadow:
+        0 16px 48px rgba(0, 0, 0, 0.5),
+        0 0 32px rgba(233, 26, 131, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    backdrop-filter: blur(16px);
+}
+
+/* Schedule Title with Glowing Line */
+.dedp-schedule-title {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 800;
+    color: #ffffff;
+    position: relative;
+    padding-bottom: 12px;
+}
+
+.dedp-schedule-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--pink);
+    box-shadow: 0 0 12px var(--pink);
+}
+
+/* Register Now CTA Button */
+.dedp-register-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 28px;
+    border-radius: var(--radius-pill);
+    background: linear-gradient(135deg, #e91a83 0%, #6b3fe0 100%);
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 800;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(233, 26, 131, 0.4);
+    transition: all 0.25s ease;
+}
+
+.dedp-register-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(233, 26, 131, 0.6);
+}
+
+/* Schedule Info Rows */
+.dedp-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.dedp-info-item {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.dedp-icon-circle {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e91a83 0%, #6b3fe0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    flex-shrink: 0;
+    box-shadow: 0 4px 14px rgba(233, 26, 131, 0.3);
+}
+
+.dedp-info-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.dedp-info-heading {
+    font-size: 15px;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.dedp-info-detail {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.dedp-info-detail--bold {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+}

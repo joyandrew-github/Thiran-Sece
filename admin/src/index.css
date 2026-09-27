@@ -1,109 +1,116 @@
+/* ==========================================================================
+   THIRAN ADMIN — Design Tokens (Matching Client Template)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
+
 :root {
-    --text: #6b6375;
-    --text-h: #08060d;
-    --bg: #fff;
-    --border: #e5e4e7;
-    --code-bg: #f4f3ec;
-    --accent: #aa3bff;
-    --accent-bg: rgba(170, 59, 255, 0.1);
-    --accent-border: rgba(170, 59, 255, 0.5);
-    --social-bg: rgba(244, 243, 236, 0.5);
-    --shadow: rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+    /* --- Base palette (matches client/src/index.css) --- */
+    --bg: #0f0b1a;
+    --surface: #1a1428;
+    --surface-raised: #221b34;
+    --surface-glass: rgba(26, 20, 40, 0.72);
+    --pink: #e91a83;
+    --pink-hover: #ff3d9e;
+    --indigo: #4c24c1;
+    --indigo-hover: #6b3fe0;
+    --text-primary: #f5f3fa;
+    --text-secondary: #a99fc2;
+    --text-muted: #7a7099;
+    --border: #2e2545;
 
-    --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-    --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-    --mono: ui-monospace, Consolas, monospace;
+    /* --- Extended admin aliases --- */
+    --admin-bg: var(--bg);
+    --admin-card-bg: var(--surface);
+    --admin-surface-raised: var(--surface-raised);
+    --admin-border: var(--border);
+    --admin-pink: var(--pink);
+    --admin-pink-hover: var(--pink-hover);
+    --admin-indigo: var(--indigo);
+    --admin-indigo-hover: var(--indigo-hover);
+    --admin-text-primary: var(--text-primary);
+    --admin-text-secondary: var(--text-secondary);
+    --admin-text-muted: var(--text-muted);
 
-    font: 18px/145% var(--sans);
-    letter-spacing: 0.18px;
-    color-scheme: light dark;
-    color: var(--text);
-    background: var(--bg);
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    /* --- Gradients & Glows --- */
+    --gradient-flame: linear-gradient(135deg, var(--pink) 0%, var(--indigo) 100%);
+    --gradient-flame-hover: linear-gradient(135deg, var(--pink-hover) 0%, var(--indigo-hover) 100%);
+    --gradient-glow: radial-gradient(60% 60% at 50% 0%, rgba(233, 26, 131, 0.28) 0%, rgba(76, 36, 193, 0.1) 55%, rgba(76, 36, 193, 0) 100%);
+    --admin-gradient-flame: var(--gradient-flame);
+    --admin-gradient-flame-hover: var(--gradient-flame-hover);
 
-    @media (max-width: 1024px) {
-        font-size: 16px;
-    }
+    /* --- Shadows --- */
+    --shadow-glow-pink: 0 0 32px rgba(233, 26, 131, 0.35);
+    --shadow-glow-indigo: 0 0 32px rgba(76, 36, 193, 0.35);
+    --shadow-card: 0 12px 32px rgba(0, 0, 0, 0.45);
+
+    /* --- Typography --- */
+    --font-display: 'Inter', 'Segoe UI', sans-serif;
+    --font-body: 'Inter', 'Segoe UI', sans-serif;
+    --font-sans: 'Inter', 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* --- Border Radius & Layout --- */
+    --radius-sm: 10px;
+    --radius-md: 18px;
+    --radius-lg: 28px;
+    --radius-pill: 999px;
+    --transition-base: 320ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --text: #9ca3af;
-        --text-h: #f3f4f6;
-        --bg: #16171d;
-        --border: #2e303a;
-        --code-bg: #1f2028;
-        --accent: #c084fc;
-        --accent-bg: rgba(192, 132, 252, 0.15);
-        --accent-border: rgba(192, 132, 252, 0.5);
-        --social-bg: rgba(47, 48, 58, 0.5);
-        --shadow: rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-    }
-
-    #social .button-icon {
-        filter: invert(1) brightness(2);
-    }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    margin: 0;
+    font-family: var(--font-body);
+    background-color: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    background-image:
+        linear-gradient(rgba(233, 26, 131, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(76, 36, 193, 0.03) 1px, transparent 1px);
+    background-size: 32px 32px;
 }
 
-#root {
-    width: 1126px;
-    max-width: 100%;
-    margin: 0 auto;
-    text-align: center;
-    border-inline: 1px solid var(--border);
-    min-height: 100svh;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
+button {
+    font-family: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background: none;
+    color: inherit;
 }
 
-h1,
-h2 {
-    font-family: var(--heading);
-    font-weight: 500;
-    color: var(--text-h);
+input,
+select,
+textarea {
+    font-family: inherit;
 }
 
-h1 {
-    font-size: 56px;
-    letter-spacing: -1.68px;
-    margin: 32px 0;
-    @media (max-width: 1024px) {
-        font-size: 36px;
-        margin: 20px 0;
-    }
-}
-h2 {
-    font-size: 24px;
-    line-height: 118%;
-    letter-spacing: -0.24px;
-    margin: 0 0 8px;
-    @media (max-width: 1024px) {
-        font-size: 20px;
-    }
-}
-p {
-    margin: 0;
+a {
+    text-decoration: none;
+    color: inherit;
 }
 
-code,
-.counter {
-    font-family: var(--mono);
-    display: inline-flex;
-    border-radius: 4px;
-    color: var(--text-h);
+/* Scrollbar customization */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
 }
 
-code {
-    font-size: 15px;
-    line-height: 135%;
-    padding: 4px 8px;
-    background: var(--code-bg);
+::-webkit-scrollbar-track {
+    background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: var(--radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--pink);
 }

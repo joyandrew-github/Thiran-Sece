@@ -1,0 +1,50 @@
+/* ==========================================================================
+   RecentRegistrations Component Specific Styles
+   ========================================================================== */
+
+.admin-user-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(76, 36, 193, 0.15);
+    border: 1px solid rgba(76, 36, 193, 0.3);
+    color: #a99fc2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.admin-user-cell-name {
+    font-weight: 700;
+    color: var(--text-primary);
+    font-size: 13.5px;
+}
+
+.admin-email-text {
+    color: var(--text-secondary);
+    font-size: 12.5px;
+}
+
+.admin-event-tag {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 13px;
+}
+
+.admin-time-text {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.admin-status-badge--pending {
+    background: rgba(255, 170, 0, 0.12);
+    border: 1px solid rgba(255, 170, 0, 0.3);
+    color: #ffaa00;
+}

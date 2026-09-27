@@ -1,0 +1,115 @@
+/* ==========================================================================
+   QuickActions Component Styles
+   ========================================================================== */
+
+.admin-quick-actions-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.admin-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin-section-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+}
+
+.admin-section-sub {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+.admin-quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.admin-quick-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    text-align: left;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.admin-quick-btn-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    background: rgba(245, 243, 250, 0.05);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--pink);
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+}
+
+.admin-quick-btn-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.admin-quick-btn-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.admin-quick-btn-desc {
+    font-size: 11.5px;
+    color: var(--text-secondary);
+}
+
+.admin-quick-btn-arrow {
+    color: var(--text-secondary);
+    transition:
+        transform 0.25s ease,
+        color 0.25s ease;
+}
+
+.admin-quick-btn:hover {
+    background: var(--surface-raised);
+    border-color: rgba(233, 26, 131, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.admin-quick-btn:hover .admin-quick-btn-icon {
+    background: var(--gradient-flame);
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 0 16px rgba(233, 26, 131, 0.4);
+}
+
+.admin-quick-btn:hover .admin-quick-btn-arrow {
+    transform: translate(2px, -2px);
+    color: var(--pink);
+}
+
+/* Primary Highlight Action */
+.admin-quick-btn--primary {
+    border-color: rgba(233, 26, 131, 0.35);
+    background: linear-gradient(135deg, rgba(233, 26, 131, 0.08) 0%, rgba(76, 36, 193, 0.08) 100%);
+}

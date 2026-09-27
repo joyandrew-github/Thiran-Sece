@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useCountdown } from '../../../../hooks/useCountdown';
 import './CountdownSection.css';
 import lightFlare from '../../../../assets/home-1-light.png';
 
@@ -11,18 +12,6 @@ const UNITS = [
     { key: 'minutes', label: 'Min' },
     { key: 'seconds', label: 'Sec' }
 ];
-
-function getTimeLeft() {
-    const diff = EVENT_DATE.getTime() - Date.now();
-    if (diff <= 0) {
-        return { days: 0, hours: 0, minutes: 0, seconds: 0, done: true };
-    }
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-    return { days, hours, minutes, seconds, done: false };
-}
 
 // A single split-flap style digit tile. Re-plays its flip animation
 // whenever the value it's showing actually changes.
@@ -59,12 +48,7 @@ function FlapUnit({ value, label, index }) {
 }
 
 export default function CountdownSection() {
-    const [time, setTime] = useState(getTimeLeft);
-
-    useEffect(() => {
-        const id = setInterval(() => setTime(getTimeLeft()), 1000);
-        return () => clearInterval(id);
-    }, []);
+    const time = useCountdown(EVENT_DATE);
 
     return (
         <section

@@ -2,12 +2,12 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ReactLenis } from 'lenis/react';
 import Layout from './Layout/Layout';
 import HomePage from './Pages/Homepage/Homepage';
+import DynamicSectionPage from './Pages/DynamicSection/DynamicSectionPage';
+import DynamicEventDetailPage from './Pages/DynamicSection/DynamicEventDetailPage';
 import Loader from './Components/Loader/Loader';
 import 'lenis/dist/lenis.css';
 import './index.css';
 
-// Add further routes (Hackathons, TechFest, etc.) as pages get built —
-// they'll automatically inherit the Navbar + Footer via the Layout route.
 export default function App() {
     return (
         <ReactLenis
@@ -20,6 +20,26 @@ export default function App() {
                         <Route
                             path="/"
                             element={<HomePage />}
+                        />
+
+                        {/* Dynamic Section Page Routes */}
+                        <Route
+                            path="/hackathons"
+                            element={<DynamicSectionPage sectionSlug="hackathons" />}
+                        />
+                        <Route
+                            path="/hackathons/:eventSlug"
+                            element={<DynamicEventDetailPage />}
+                        />
+
+                        {/* Universal Dynamic Section Catch-all Routes */}
+                        <Route
+                            path="/:sectionSlug"
+                            element={<DynamicSectionPage />}
+                        />
+                        <Route
+                            path="/:sectionSlug/:eventSlug"
+                            element={<DynamicEventDetailPage />}
                         />
                     </Route>
                 </Routes>

@@ -1,0 +1,117 @@
+/* ==========================================================================
+   StatCard Component Styles
+   ========================================================================== */
+
+.admin-stat-card {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.admin-stat-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(233, 26, 131, 0.4);
+    box-shadow:
+        0 14px 36px rgba(0, 0, 0, 0.45),
+        0 0 24px rgba(233, 26, 131, 0.15);
+}
+
+.admin-stat-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin-stat-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 0.02em;
+}
+
+.admin-stat-icon-wrap {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.admin-stat-card:hover .admin-stat-icon-wrap {
+    transform: scale(1.08);
+}
+
+.admin-stat-icon-wrap--pink {
+    background: rgba(233, 26, 131, 0.12);
+    border: 1px solid rgba(233, 26, 131, 0.3);
+    color: var(--pink);
+}
+
+.admin-stat-icon-wrap--indigo {
+    background: rgba(76, 36, 193, 0.15);
+    border: 1px solid rgba(76, 36, 193, 0.35);
+    color: #8b6aff;
+}
+
+.admin-stat-body {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.admin-stat-value {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.admin-stat-change {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: var(--radius-pill);
+}
+
+.admin-stat-change--positive {
+    background: rgba(0, 229, 143, 0.12);
+    border: 1px solid rgba(0, 229, 143, 0.3);
+    color: #00e58f;
+}
+
+.admin-stat-change--neutral {
+    background: rgba(245, 243, 250, 0.06);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+}
+
+.admin-stat-bottom-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+}
+
+.admin-stat-bottom-line--pink {
+    background: linear-gradient(90deg, var(--pink) 0%, transparent 100%);
+}
+
+.admin-stat-bottom-line--indigo {
+    background: linear-gradient(90deg, var(--indigo) 0%, transparent 100%);
+}
